@@ -19,13 +19,47 @@ exports.getTours = async (req, res) => {
 // save tour button
 exports.createTour = async (req, res) => {
   try {
+    // Destructuring creates local variables —
+    // changing them does not change the original object (req.body) unless you explicitly update it.
+    let {
+      title,
+      pick_up,
+      drop_off,
+      description,
+      meeting_point,
+      duration,
+      duration_unit,
+    } = req.body;
+
+    console.log(req.body);
+
     //  validating body
     if (!req.body) {
       console.error("No tour data provided.");
       return res.status(400).json({ message: "No tour data provided." });
     }
+
+    // prevents numeric garbage data
+    if (
+      !isNaN(title) ||
+      !isNaN(description) ||
+      !isNaN(pick_up) ||
+      !isNaN(meeting_point) ||
+      !isNaN(drop_off)
+    ) {
+      console.error("Invalid tour data provided.");
+      return res.status(400).json({
+        message:
+          "Invalid tour data provided. Don't just drop numbers anywhere!",
+      });
+    }
     // generating custom id
     req.body.id = idGenerator();
+    // inserting fields ignored by Mongoose
+    // because they were set to undefined to fail numeric checks
+    if (!description) req.body.description = "N/A";
+    if (!meeting_point) req.body.meeting_point = "N/A";
+
     const tour = await Tour.create(req.body);
     res.status(201).json(tour);
     console.log("Tour created successfully.");
