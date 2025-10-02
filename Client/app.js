@@ -44,7 +44,14 @@ const editDurationUnitSelect = document.getElementById("editDurationUnit");
 function displayTours(data, edit = false, displayEditBtn = false) {
   tourDetailsHidden.classList.add("hidden");
   const tourList = document.createElement("div");
-  tourList.classList.add("tourList", "flex", "flex-col", "p-4", "m-2", "gap-2");
+  tourList.classList.add(
+    "tourList",
+    "flex",
+    "flex-col",
+    "overflow-y-scroll",
+    "m-1",
+    "gap-2"
+  );
 
   data.forEach((tour) => {
     const tourElement = document.createElement("div");
@@ -57,18 +64,21 @@ function displayTours(data, edit = false, displayEditBtn = false) {
       "mb-4",
       "rounded-sm",
       "bg-white",
-      "shadow"
+      "shadow",
+      "overflow-hidden"
     );
 
     tourElement.innerHTML = `
       <h3 class="text-xl font-semibold mb-2">${tour.title}</h3>
       <p class="mb-1"><strong>Tour ID:</strong> ${tour.id}</p>
       <p class="mb-1"><strong>Description:</strong> ${
-        tour.description.trim() || "N/A"
+        // empty sent as undefined, which was breaking trim() while fetching all tours.
+        // Hence, optional  chaining
+        tour.description?.trim() || "N/A"
       }</p>
       <p class="mb-1"><strong>Pick Up:</strong> ${tour.pick_up}</p>
       <p class="mb-1"><strong>Meeting Point:</strong> ${
-        tour.meeting_point.trim() || "N/A"
+        tour.meeting_point?.trim() || "N/A"
       }</p>
       <p class="mb-1"><strong>Drop Off:</strong> ${tour.drop_off}</p> 
       <p class="mb-1"><strong>Duration:</strong> ${tour.duration} ${
@@ -83,6 +93,7 @@ function displayTours(data, edit = false, displayEditBtn = false) {
       const editBtn = tourElement.querySelector(".editBtn");
       editBtn.addEventListener("click", () => {
         tourDetailsHidden.classList.remove("hidden");
+        displayTourDetails.classList.add("hidden");
         // Populate edit fields
         hiddenId.value = tour.id;
         displayTourId.textContent = tour.id;
@@ -113,9 +124,12 @@ createForm.addEventListener("submit", async (e) => {
   // Gather values
   const data = {
     title: title.value.trim(),
-    description: description.value.trim(),
+    // undefined will skip minLength validation for description
+    // and will fail numeric garbage values for meeting point and description in controller validation
+    // otherwise empty string were triggering numeric garbage validation
+    description: description.value.trim() || undefined,
     pick_up: pickUp.value.trim(),
-    meeting_point: meetingPoint.value.trim(),
+    meeting_point: meetingPoint.value.trim() || undefined,
     drop_off: dropOff.value.trim(),
     duration: parseFloat(duration.value),
     duration_unit: durationUnitSelect.value,
