@@ -111,7 +111,7 @@
         <div class="flex justify-end">
           <button
             type="submit"
-            class="bg-blue-600 hover:bg-green-700 text-white px-6 py-2 rounded"
+            class="bg-blue-600 hover:bg-green-700 text-white px-4 py-2 rounded"
           >
             Save Tour
           </button>
@@ -159,7 +159,7 @@
       <!-- Display fetched tour -->
       <div
         id="tourDetails"
-        class="hidden mt-4 p-4 border rounded bg-gray-50 drop-shadow-sm"
+        class="hidden mt-4 p-4 border rounded bg-gray-50 drop-shadow-sm w-full max-w-lg"
       >
         <h3 class="font-semibold text-lg mb-3">Tour Details</h3>
         <input type="hidden" id="hiddenId" />
@@ -246,10 +246,7 @@
         </div>
       </div>
 
-      <div
-        id="displayTourDetails"
-        class="hidden mt-4 p-4 bg-white shadow-md rounded"
-      ></div>
+      <div id="displayTourDetails" class="hidden p-2"></div>
     </section>
 
     <script src="./app.js"></script>
