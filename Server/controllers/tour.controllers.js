@@ -143,7 +143,7 @@ exports.deleteTour = async (req, res) => {
       console.error("Tour not found! Enter Id correctly.");
       return res.status(404).json({ message: "Tour not found." });
     }
-    console.log("Tour deleted successfully.", id, req.body.title);
+    console.log("Tour deleted successfully.", id);
     res.status(200).json(tour);
   } catch (err) {
     console.error({ error: err.message }, { stack: err.stack });

@@ -315,11 +315,11 @@ updateBtn.addEventListener("click", async (e) => {
       return;
     }
     const data = {
-      title: editTitle.value.trim(),
-      description: editDescription.value.trim(),
-      pick_up: editPickUp.value.trim(),
-      meeting_point: editMeetingPoint.value.trim(),
-      drop_off: editDropOff.value.trim(),
+      title: editTitle.value.trim() || undefined,
+      description: editDescription.value.trim() || undefined,
+      pick_up: editPickUp.value.trim() || undefined,
+      meeting_point: editMeetingPoint.value.trim() || undefined,
+      drop_off: editDropOff.value.trim() || undefined,
       duration: parseFloat(editDuration.value),
       duration_unit: editDurationUnitSelect.value,
     };
@@ -371,8 +371,8 @@ deleteBtn.addEventListener("click", async (e) => {
       tourDetailsHidden.classList.add("hidden");
       displayTourDetails.classList.add("hidden");
     } else {
-      console.error(result.error || "Failed to delete tour.");
-      alert(result.error.message || "Failed to delete tour.");
+      console.error(result.message || "Failed to delete tour.");
+      alert(result.message || "Failed to delete tour.");
     }
   } catch (err) {
     alert("Error deleting tour. Please try again later.");
