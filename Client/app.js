@@ -42,8 +42,11 @@ const editDurationUnitSelect = document.getElementById("editDurationUnit");
 //  Displaying Tour Data Dynamically
 
 function displayTours(data, edit = false, displayEditBtn = false) {
+  createMessage.textContent = "";
   tourDetailsHidden.classList.add("hidden");
   const tourList = document.createElement("div");
+  const closeAllBtn = document.createElement("button");
+
   tourList.classList.add(
     "tourList",
     "flex",
@@ -53,6 +56,28 @@ function displayTours(data, edit = false, displayEditBtn = false) {
     "gap-2"
   );
 
+  closeAllBtn.classList.add(
+    "w-8",
+    "h-8",
+    "rounded-full",
+    "bg-green-600",
+    "hover:bg-green-800",
+    "text-white",
+    "flex",
+    "items-center",
+    "justify-center",
+    "sticky",
+    "top-0",
+    "z-10",
+    "mx-auto"
+  );
+
+  closeAllBtn.textContent = "▲";
+
+  closeAllBtn.addEventListener("click", () => {
+    const closeAll = tourList.classList.toggle("hidden");
+    closeAllBtn.textContent = closeAll ? "▼" : "▲";
+  });
   data.forEach((tour) => {
     const tourElement = document.createElement("div");
 
@@ -113,6 +138,7 @@ function displayTours(data, edit = false, displayEditBtn = false) {
   displayTourDetails.innerHTML = "";
   // Show details section
   displayTourDetails.classList.remove("hidden");
+  displayTourDetails.appendChild(closeAllBtn);
   displayTourDetails.appendChild(tourList);
 }
 
