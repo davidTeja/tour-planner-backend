@@ -75,7 +75,7 @@ exports.getToursById = async (req, res) => {
     // const tour = await Tour.findById(tourId).lean();
     const tour = await Tour.findOne({ id: tourId }).lean();
     if (!tour) {
-      console.error("Tour not found!");
+      console.error("Tour not found! ");
       return res.status(404).json({ message: "Tour not found." });
     }
     res.status(200).json(tour);
@@ -83,5 +83,70 @@ exports.getToursById = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.error({ error: err.message }, { stack: err.stack });
+  }
+};
+
+exports.updateTourById = async (req, res) => {
+  try {
+    let {
+      title,
+      pick_up,
+      drop_off,
+      description,
+      meeting_point,
+      duration,
+      duration_unit,
+    } = req.body;
+
+    // preventing numeric garbage
+    if (
+      !isNaN(title) ||
+      !isNaN(description) ||
+      !isNaN(pick_up) ||
+      !isNaN(meeting_point) ||
+      !isNaN(drop_off)
+    ) {
+      console.error("Invalid tour data provided.");
+      return res.status(400).json({
+        message:
+          "Invalid tour data provided. Don't just drop numbers anywhere!",
+      });
+    }
+    const { id } = req.params;
+    // validating body
+    if (!req.body) {
+      console.error("No tour data provided.");
+      return res.status(400).json({ message: "No tour data provided." });
+    }
+    const tour = await Tour.findOneAndUpdate({ id }, req.body, {
+      new: true,
+    });
+    if (!tour) {
+      console.error("Tour not found! Enter Id correctly.");
+      return res.status(404).json({ message: "Tour not found." });
+    }
+
+    console.log(tour);
+    res.status(200).json(tour);
+    console.log("Tour updated successfully.", id, req.body.title);
+  } catch (err) {
+    console.error({ error: err.message }, { stack: err.stack });
+    res.status(400).json({ message: err.message });
+  }
+};
+
+exports.deleteTour = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const tour = await Tour.findOneAndDelete({ id });
+    if (!tour) {
+      console.error("Tour not found! Enter Id correctly.");
+      return res.status(404).json({ message: "Tour not found." });
+    }
+    console.log("Tour deleted successfully.", id, req.body.title);
+    res.status(200).json(tour);
+  } catch (err) {
+    console.error({ error: err.message }, { stack: err.stack });
+    res.status(400).json({ message: err.message });
   }
 };
