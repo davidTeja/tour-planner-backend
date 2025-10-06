@@ -170,7 +170,7 @@ createForm.addEventListener("submit", async (e) => {
   }
 
   try {
-    const res = await fetch("http://localhost:5500/api/v1/tours", {
+    const res = await fetch("http://localhost:5500/api/v1/create-tour", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -244,6 +244,7 @@ searchBtn.addEventListener("click", async (e) => {
 
   try {
     const tourId = searchTerm.value.trim();
+    hiddenId.value = tourId;
     // validate tourId
     if (!tourId) {
       alert("Please enter a valid Tour ID.");
@@ -251,7 +252,7 @@ searchBtn.addEventListener("click", async (e) => {
       // since, displayTourDetails is an empty div hidden by default we're not hiding it again
       return;
     }
-    const res = await fetch(`http://localhost:5500/api/v1/tours/${tourId}`);
+    const res = await fetch(`http://localhost:5500/api/v1/get-tour/${tourId}`);
     const data = await res.json();
     // Checking response
     if (!res.ok) {
@@ -272,9 +273,9 @@ searchBtn.addEventListener("click", async (e) => {
     }
     // Dynamically update the display based on the number of tours
     createMessage.textContent = "";
-    hiddenId.value = tourId;
 
-    displayTours([data], true); // Wrap single tour in array, since we are expecting an array in displayTours
+    // Wrap single tour in array, since we are expecting an array in displayTours
+    displayTours([data], true);
   } catch (err) {
     console.error("Error fetching Tours:", err);
 
@@ -323,7 +324,7 @@ updateBtn.addEventListener("click", async (e) => {
       duration_unit: editDurationUnitSelect.value,
     };
 
-    const res = await fetch(`http://localhost:5500/tour/${tourId}`, {
+    const res = await fetch(`http://localhost:5500/update-tour/${tourId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -353,7 +354,8 @@ updateBtn.addEventListener("click", async (e) => {
 deleteBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   try {
-    const res = await fetch(`http://localhost:5500/tour/${hiddenId.value}`, {
+    const tourId = hiddenId.value.trim();
+    const res = await fetch(`http://localhost:5500/delete-tour/${tourId}`, {
       method: "DELETE",
     });
     const result = await res.json();
