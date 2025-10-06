@@ -230,7 +230,7 @@ fetchAllBtn.addEventListener("click", async (e) => {
       return;
     }
     // displaying tours
-    displayTours(data);
+    displayTours(data, true);
   } catch (err) {
     console.error("Error fetching Tours:", err);
     createMessage.textContent = err.message || "Failed to fetch tours.";
