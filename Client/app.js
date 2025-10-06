@@ -110,7 +110,7 @@ function displayTours(data, edit = false, displayEditBtn = false) {
       tour.duration_unit
     }</p>
       <p class="mb-1"><strong>Created On:</strong> ${tour.createdAt}</p>
-      <p class="displayDate mb-1 hidden"><strong>Created On:</strong> ${
+      <p class="displayDate mb-1 hidden"><strong>Updated On:</strong> ${
         tour.updatedAt
       }</p>
       
@@ -341,12 +341,9 @@ updateBtn.addEventListener("click", async (e) => {
       hiddenId.value = result.id;
       displayTours([result], true); // Re-fetch the tour details
       alert("Tour updated successfully!");
-    } else if (result.error === "failed") {
-      console.error(result.error || "Failed to update tour.");
-      alert(result.error.message || "Failed to update tour.");
     } else {
-      alert(result.error.message || "Network error. Please try again later.");
-      console.error(result.error || "Network error. Please try again later.");
+      console.error(result.message || "Failed to update tour.");
+      alert(result.message || "Failed to update tour.");
     }
   } catch (err) {
     alert("Error updating tour. Please try again later.");
