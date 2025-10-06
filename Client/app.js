@@ -110,12 +110,18 @@ function displayTours(data, edit = false, displayEditBtn = false) {
       tour.duration_unit
     }</p>
       <p class="mb-1"><strong>Created On:</strong> ${tour.createdAt}</p>
+      <p class="displayDate mb-1 hidden"><strong>Created On:</strong> ${
+        tour.updatedAt
+      }</p>
+      
       <button class=" editBtn hidden mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</button>
       `;
     tourList.appendChild(tourElement);
     // edit button reveal
     if (edit) {
       const editBtn = tourElement.querySelector(".editBtn");
+      const displayDate = tourElement.querySelector(".displayDate");
+      displayDate.classList.remove("hidden");
       editBtn.addEventListener("click", () => {
         tourDetailsHidden.classList.remove("hidden");
         displayTourDetails.classList.add("hidden");
@@ -209,9 +215,9 @@ fetchAllBtn.addEventListener("click", async (e) => {
     const data = await res.json();
     // Checking response
     if (!res.ok) {
+      console.log(data, res);
       console.error("Failed to fetch tours :", data.error);
-      createMessage.textContent =
-        data.error.message || "Failed to fetch tours.";
+      createMessage.textContent = data.message || "Failed to fetch tours.";
       createMessage.classList.remove("text-green-700");
       createMessage.classList.add("text-red-600", "italic");
       throw new Error(data.error || "Failed to fetch tours");
@@ -227,10 +233,7 @@ fetchAllBtn.addEventListener("click", async (e) => {
     displayTours(data);
   } catch (err) {
     console.error("Error fetching Tours:", err);
-    createMessage.textContent =
-      err.message === "failed"
-        ? "Failed to fetch tours."
-        : "Network error. Please try again later.";
+    createMessage.textContent = err.message || "Failed to fetch tours.";
     createMessage.classList.add("text-red-700", "italic", "text-sm");
     tourDetailsHidden.classList.add("hidden");
     displayTourDetails.classList.add("hidden");
@@ -256,12 +259,11 @@ searchBtn.addEventListener("click", async (e) => {
     const data = await res.json();
     // Checking response
     if (!res.ok) {
-      createMessage.textContent =
-        data.error.message || "Failed to fetch tours.";
+      createMessage.textContent = data.message || "Failed to fetch tours.";
       createMessage.classList.remove("text-green-700");
       createMessage.classList.add("text-red-600", "italic");
-      console.error("Failed to fetch tours :", data.error);
-      throw new Error(data.error || "Failed to fetch tours");
+      console.error("Failed to fetch tours :", data.message);
+      return;
     }
     // Handle empty list
     if (data.length === 0) {
@@ -280,9 +282,7 @@ searchBtn.addEventListener("click", async (e) => {
     console.error("Error fetching Tours:", err);
 
     createMessage.textContent =
-      err.message === "failed"
-        ? "Failed to fetch tours"
-        : "Network error. Please try again later.";
+      err.message === "failed" || "Failed to fetch tours";
 
     createMessage.classList.add("text-red-700", "italic", "text-sm");
     tourDetailsHidden.classList.add("hidden");
@@ -324,20 +324,23 @@ updateBtn.addEventListener("click", async (e) => {
       duration_unit: editDurationUnitSelect.value,
     };
 
-    const res = await fetch(`http://localhost:5500/update-tour/${tourId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const res = await fetch(
+      `http://localhost:5500/api/v1/update-tour/${tourId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
     const result = await res.json();
 
     if (res.ok) {
-      alert("Tour updated successfully!");
       // Optionally, refresh the displayed tour details
-      hiddenId.value = result.body.id;
-      displayTours([result.body], true); // Re-fetch the tour details
+      hiddenId.value = result.id;
+      displayTours([result], true); // Re-fetch the tour details
+      alert("Tour updated successfully!");
     } else if (result.error === "failed") {
       console.error(result.error || "Failed to update tour.");
       alert(result.error.message || "Failed to update tour.");
@@ -355,9 +358,12 @@ deleteBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   try {
     const tourId = hiddenId.value.trim();
-    const res = await fetch(`http://localhost:5500/delete-tour/${tourId}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `http://localhost:5500/api/v1/delete-tour/${tourId}`,
+      {
+        method: "DELETE",
+      }
+    );
     const result = await res.json();
 
     if (res.ok) {
