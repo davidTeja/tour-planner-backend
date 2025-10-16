@@ -41,7 +41,7 @@ const editDurationUnitSelect = document.getElementById("editDurationUnit");
 
 //  Displaying Tour Data Dynamically
 
-function displayTours(data, edit = false, displayEditBtn = false) {
+function displayTours(data, edit = false) {
   createMessage.textContent = "";
   tourDetailsHidden.classList.add("hidden");
   const tourList = document.createElement("div");
