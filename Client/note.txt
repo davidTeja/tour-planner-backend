@@ -1,0 +1,5 @@
+This folder Client is just for local testing Only
+since we are serving static files in public folder to the backend now
+
+To test, be sure to set the $env:NODE_ENV="development" in powershell 
+(works only for that session of powershell)
