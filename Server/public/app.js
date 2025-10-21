@@ -218,11 +218,11 @@ fetchAllBtn.addEventListener("click", async (e) => {
     // Checking response
     if (!res.ok) {
       console.log(data, res);
-      console.error("Failed to fetch tours :", data.error);
+      console.error("Failed to fetch tours :", data.message);
       createMessage.textContent = data.message || "Failed to fetch tours.";
       createMessage.classList.remove("text-green-700");
       createMessage.classList.add("text-red-600", "italic");
-      throw new Error(data.error || "Failed to fetch tours");
+      throw new Error(data.message || "Failed to fetch tours");
     }
     // Handle empty list
     if (data.length === 0) {
