@@ -40,7 +40,7 @@ const editDuration = document.getElementById("editDuration");
 const editDurationUnitSelect = document.getElementById("editDurationUnit");
 
 // I can't import from server config directly here
-const API_BASE = "https://tour-planner-backend.onrender.com/api/v1";
+const API_BASE = "http://localhost:5500/api/v1";
 
 //  Displaying Tour Data Dynamically
 function displayTours(data, edit = false) {
@@ -218,7 +218,7 @@ fetchAllBtn.addEventListener("click", async (e) => {
     // Checking response
     if (!res.ok) {
       console.log(data, res);
-      console.error("Failed to fetch tours :", data.error);
+      console.error("Failed to fetch tours :", data.message);
       createMessage.textContent = data.message || "Failed to fetch tours.";
       createMessage.classList.remove("text-green-700");
       createMessage.classList.add("text-red-600", "italic");
