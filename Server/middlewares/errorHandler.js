@@ -1,6 +1,6 @@
 exports.wrongRouteHandler = (req, res, next) => {
   res.status(404).json({ message: `Route ${req.originalUrl} not found` });
-  console.error(`Route http://localhost:5500${req.originalUrl} not found`);
+  console.error(`Route ${req.originalUrl} not found`);
   next();
 };
 
