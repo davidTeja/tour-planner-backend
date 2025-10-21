@@ -39,8 +39,10 @@ const editDropOff = document.getElementById("editDropOff");
 const editDuration = document.getElementById("editDuration");
 const editDurationUnitSelect = document.getElementById("editDurationUnit");
 
-//  Displaying Tour Data Dynamically
+// I can't import from server config directly here
+const API_BASE = "https://tour-planner-backend.onrender.com/api/v1";
 
+//  Displaying Tour Data Dynamically
 function displayTours(data, edit = false) {
   createMessage.textContent = "";
   tourDetailsHidden.classList.add("hidden");
@@ -149,7 +151,7 @@ function displayTours(data, edit = false) {
 }
 
 // --- CREATE TOUR ---
-// https://localhost:5500/tour, POST
+
 createForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // stop form from reloading page
 
@@ -176,7 +178,7 @@ createForm.addEventListener("submit", async (e) => {
   }
 
   try {
-    const res = await fetch("http://localhost:5500/api/v1/create-tour", {
+    const res = await fetch(`${API_BASE}/create-tour`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -206,12 +208,12 @@ createForm.addEventListener("submit", async (e) => {
 });
 
 // --- FETCH ALL TOURS ---
-// http://localhost:5500/tour, GET
+
 fetchAllBtn.addEventListener("click", async (e) => {
   e.preventDefault();
 
   try {
-    const res = await fetch("http://localhost:5500/api/v1/tours");
+    const res = await fetch(`${API_BASE}/tours`);
     const data = await res.json();
     // Checking response
     if (!res.ok) {
@@ -241,7 +243,7 @@ fetchAllBtn.addEventListener("click", async (e) => {
 });
 
 //  --- SEARCH TOUR BY ID ---
-// http://localhost:5500/tour/:id, GET
+
 searchBtn.addEventListener("click", async (e) => {
   e.preventDefault();
 
@@ -255,7 +257,7 @@ searchBtn.addEventListener("click", async (e) => {
       // since, displayTourDetails is an empty div hidden by default we're not hiding it again
       return;
     }
-    const res = await fetch(`http://localhost:5500/api/v1/get-tour/${tourId}`);
+    const res = await fetch(`${API_BASE}/get-tour/${tourId}`);
     const data = await res.json();
     // Checking response
     if (!res.ok) {
@@ -293,7 +295,6 @@ searchBtn.addEventListener("click", async (e) => {
 });
 
 // --- UPDATE TOUR BY ID ---
-// http://localhost:5500/tour/:id, PUT
 
 updateBtn.addEventListener("click", async (e) => {
   e.preventDefault();
@@ -324,16 +325,13 @@ updateBtn.addEventListener("click", async (e) => {
       duration_unit: editDurationUnitSelect.value,
     };
 
-    const res = await fetch(
-      `http://localhost:5500/api/v1/update-tour/${tourId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const res = await fetch(`${API_BASE}/update-tour/${tourId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
     const result = await res.json();
 
     if (res.ok) {
@@ -351,16 +349,15 @@ updateBtn.addEventListener("click", async (e) => {
   }
 });
 
+// --- DELETE TOUR BY ID ---
+
 deleteBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   try {
     const tourId = hiddenId.value.trim();
-    const res = await fetch(
-      `http://localhost:5500/api/v1/delete-tour/${tourId}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const res = await fetch(`${API_BASE}/delete-tour/${tourId}`, {
+      method: "DELETE",
+    });
     const result = await res.json();
 
     if (res.ok) {
