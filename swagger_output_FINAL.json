@@ -1,0 +1,381 @@
+{
+  "swagger": "2.0",
+  "x-stoplight": {
+    "id": "m3wnbfyd4vzi7"
+  },
+  "info": {
+    "title": "Tour Planner API",
+    "description": "Automatically generated API documentation for the Tour Planner backend.",
+    "version": "1.0.1",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "tour-planner-backend.onrender.com",
+  "basePath": "/api/v1",
+  "schemes": [
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "General",
+      "description": "General API endpoints"
+    },
+    {
+      "name": "Tours",
+      "description": "All tour related endpoints"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "API Root",
+        "description": "Confirms API is running and provides guidance.",
+        "operationId": "apiRoot",
+        "responses": {
+          "200": {
+            "description": "Guide to redirect to correct route",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "API is running. To fetch tours, go to /api/v1/tours"
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "5ozknnluw2n21"
+        }
+      }
+    },
+    "/tours": {
+      "get": {
+        "tags": [
+          "Tours"
+        ],
+        "summary": "List All Tours",
+        "description": "Fetch all tours. Returns an array of tours if available.",
+        "operationId": "getAllTours",
+        "responses": {
+          "200": {
+            "description": "List of all tours",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tour"
+              }
+            }
+          },
+          "404": {
+            "description": "No tours found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-stoplight": {
+          "id": "hofyexc84sih0"
+        }
+      }
+    },
+    "/get-tour/{id}": {
+      "get": {
+        "tags": [
+          "Tours"
+        ],
+        "summary": "Get a Tour",
+        "description": "Fetch a single tour by its ID.",
+        "operationId": "getTourById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique tour ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tour fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/Tour"
+            }
+          },
+          "404": {
+            "description": "Tour not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-stoplight": {
+          "id": "ehv53wmklbzt8"
+        }
+      }
+    },
+    "/create-tour": {
+      "post": {
+        "tags": [
+          "Tours"
+        ],
+        "summary": "Create a Tour",
+        "description": "Create a new tour.",
+        "operationId": "createTour",
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Create a new tour.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Create-Tour-Form"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Tour created successfully",
+            "schema": {
+              "$ref": "#/definitions/Tour"
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid or missing fields)"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-stoplight": {
+          "id": "c9bxmabq4ztgp"
+        }
+      }
+    },
+    "/update-tour/{id}": {
+      "put": {
+        "tags": [
+          "Tours"
+        ],
+        "summary": "Update a Tour",
+        "description": "Update an existing tour by its ID. Only provided fields will be updated.",
+        "operationId": "updateTourById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique tour ID"
+          },
+          {
+            "name": "body",
+            "description": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Update-Tour-Form"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tour updated successfully",
+            "schema": {
+              "$ref": "#/definitions/Tour"
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid or numeric garbage fields)"
+          },
+          "404": {
+            "description": "Tour not found"
+          }
+        },
+        "x-stoplight": {
+          "id": "9css5zysisxdl"
+        }
+      }
+    },
+    "/delete-tour/{id}": {
+      "delete": {
+        "tags": [
+          "Tours"
+        ],
+        "summary": "Delete a Tour",
+        "description": "Delete a tour by its ID.",
+        "operationId": "deleteTourById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique tour ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tour deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/Tour"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Tour not found"
+          }
+        },
+        "x-stoplight": {
+          "id": "b0jmnrx6gfpzr"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Create-Tour-Form": {
+      "type": "object",
+      "required": [
+        "title",
+        "pick_up",
+        "drop_off",
+        "duration",
+        "duration_unit"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "City Walking Tour"
+        },
+        "description": {
+          "type": "string",
+          "example": "A detailed tour of the city's landmarks"
+        },
+        "pick_up": {
+          "type": "string",
+          "example": "Hotel Lobby"
+        },
+        "meeting_point": {
+          "type": "string",
+          "example": "Main Square"
+        },
+        "drop_off": {
+          "type": "string",
+          "example": "Hotel Lobby"
+        },
+        "duration": {
+          "type": "number",
+          "example": 3
+        },
+        "duration_unit": {
+          "type": "string",
+          "example": "hours"
+        }
+      },
+      "description": "This is when a tour is created for the first time.",
+      "title": "Create Tour Form",
+      "x-stoplight": {
+        "id": "bqwm32xm17vrz"
+      }
+    },
+    "Update-Tour-Form": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "City Walking Tour"
+        },
+        "description": {
+          "type": "string",
+          "example": "A detailed tour of the city's landmarks"
+        },
+        "pick_up": {
+          "type": "string",
+          "example": "Hotel Lobby"
+        },
+        "meeting_point": {
+          "type": "string",
+          "example": "Main Square"
+        },
+        "drop_off": {
+          "type": "string",
+          "example": "Hotel Lobby"
+        },
+        "duration": {
+          "type": "number",
+          "example": 3
+        },
+        "duration_unit": {
+          "type": "string",
+          "example": "hours"
+        }
+      },
+      "description": "This is what the update form UI sends to the database",
+      "title": "Update Tour Form",
+      "x-stoplight": {
+        "id": "3bihyssztgs0e"
+      }
+    },
+    "Tour": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "T12345"
+        },
+        "title": {
+          "type": "string",
+          "example": "City Walking Tour"
+        },
+        "description": {
+          "type": "string",
+          "example": "A detailed tour of the city's landmarks"
+        },
+        "pick_up": {
+          "type": "string",
+          "example": "Hotel Lobby"
+        },
+        "meeting_point": {
+          "type": "string",
+          "example": "Main Square"
+        },
+        "drop_off": {
+          "type": "string",
+          "example": "Hotel Lobby"
+        },
+        "duration": {
+          "type": "number",
+          "example": 3
+        },
+        "duration_unit": {
+          "type": "string",
+          "example": "hours"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-10-24T00:00:00Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-10-24T01:00:00Z"
+        }
+      },
+      "description": "This is what documents look like in database which we retrieve as response.",
+      "title": "Model of Documents in Collections in Database",
+      "x-stoplight": {
+        "id": "f2kw0wqd8644p"
+      }
+    }
+  }
+}
