@@ -1,0 +1,37 @@
+name: Generate and Commit API Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Step 3: Install required dependency
+      - name: Install dependencies
+        run: npm install swagger-autogen
+
+      # Step 4: Run Swagger generator (updated path)
+      - name: Generate Swagger docs
+        run: node Server/utils/generate-docs.js
+
+      # Step 5: Commit and push updated JSON
+      - name: Commit and push Swagger docs
+        run: |
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+          git add swagger_output.json
+          git commit -m "Auto-update Swagger docs" || echo "No changes to commit"
+          git push origin main
