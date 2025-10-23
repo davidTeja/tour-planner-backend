@@ -1,4 +1,5 @@
 // generateDocs.js
+const path = require("path");
 const swaggerAutogen = require("swagger-autogen")();
 
 const doc = {
@@ -12,7 +13,7 @@ const doc = {
   schemes: ["https"],
 };
 
-const outputFile = "./swagger_output.json";
+const outputFile = path.join(__dirname, "../swagger_output.json");
 const endpointsFiles = [
   "./Server/routes/tour.routes.js", // add other route files here if you have them
 ];

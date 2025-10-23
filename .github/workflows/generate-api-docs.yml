@@ -25,13 +25,13 @@ jobs:
 
       # Step 4: Run Swagger generator (updated path)
       - name: Generate Swagger docs
-        run: node Server/utils/generate-docs.js
+        run: node Server/utilities/generateDocs.js
 
       # Step 5: Commit and push updated JSON
       - name: Commit and push Swagger docs
         run: |
           git config --global user.email "github-actions@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
-          git add swagger_output.json
+          git add Server/swagger_output.json
           git commit -m "Auto-update Swagger docs" || echo "No changes to commit"
           git push origin main
