@@ -21,6 +21,10 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
+// API routes
+app.use("/api/v1/", tourRoutes);
+
+// Landing Page
 if (NODE_ENV === "production") {
   // Serve static files from "public" folder in production
   const publicPath = path.join(__dirname, "public");
@@ -34,9 +38,6 @@ if (NODE_ENV === "production") {
     );
   });
 }
-
-// API routes
-app.use("/api/v1/", tourRoutes);
 
 // Error handlers
 app.use(wrongRouteHandler);

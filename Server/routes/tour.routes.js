@@ -9,7 +9,9 @@ const {
 } = require("../controllers/tour.controllers.js");
 
 router.get("/", (req, res) => {
-  res.send("<h1>Tours</h1>");
+  res.status(200).json({
+    message: "API is running. To fetch tours, go to /api/v1/tours",
+  });
 });
 
 router.get("/tours", getTours);
