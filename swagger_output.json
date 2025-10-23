@@ -50,7 +50,8 @@
         },
         "x-stoplight": {
           "id": "xv3g3k7w5make"
-        }
+        },
+        "summary": "List All Tours"
       }
     },
     "/get-tour/{id}": {
