@@ -24,7 +24,8 @@
         },
         "x-stoplight": {
           "id": "ebzzrcrkujyi4"
-        }
+        },
+        "summary": "Static UI Site "
       }
     },
     "/tours": {
@@ -80,7 +81,8 @@
         },
         "x-stoplight": {
           "id": "a3piy0jr5564b"
-        }
+        },
+        "summary": "Get a Tour"
       }
     },
     "/create-tour": {
@@ -158,7 +160,8 @@
         },
         "x-stoplight": {
           "id": "2n004d02x4xt5"
-        }
+        },
+        "summary": "Create a New Tour"
       }
     },
     "/update-tour/{id}": {
@@ -236,7 +239,8 @@
         },
         "x-stoplight": {
           "id": "dlva1ph1rwt69"
-        }
+        },
+        "summary": "Update a Tour"
       }
     },
     "/delete-tour/{id}": {
@@ -267,7 +271,8 @@
         },
         "x-stoplight": {
           "id": "pg91o8oei7f65"
-        }
+        },
+        "summary": "Delete a Tour"
       }
     }
   },
