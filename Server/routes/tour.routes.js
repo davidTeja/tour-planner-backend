@@ -10,7 +10,7 @@ const {
 
 router.get("/", (req, res) => {
   res.status(200).json({
-    message: "API is running. To fetch tours, go to /api/v1/tours",
+    message: `API is running. To fetch tours, go to /api/v1/tours. For API documentation, visit https://tour-planner-backend.stoplight.io/docs/tour-planner-backend/`,
   });
 });
 
